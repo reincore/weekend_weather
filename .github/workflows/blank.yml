@@ -1,0 +1,21 @@
+name: Check Weather
+on:
+  schedule:
+    - cron:  '0 15 * * 5'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: pip install requests
+    - name: Run script
+      run: python check_weather.py
+      env:
+        API_KEY: ${{ secrets.VISUAL_CROSSING_WEATHER_API_KEY }}
+        IFTTT_URL: ${{ secrets.IFTTT_URL }}
