@@ -1,0 +1,19 @@
+name: Check Weather
+on:
+  schedule:
+    - cron: '0 15 * * 5' # This will run the action every Friday at 18:00 Istanbul time
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check weather
+      run: |
+        API_KEY=${{ secrets.VC_API_KEY }}
+        RESPONSE=$(curl -H "X-Rapidapi-Key: $API_KEY" -H "X-Rapidapi-Host: visual-crossing-weather.p.rapidapi.com" -H "Host: visual-crossing-weather.p.rapidapi.com" "https://visual-crossing-weather.p.rapidapi.com/forecast?aggregateHours=24&location=41.0264%2C28.9808&contentType=json&unitGroup=metric&shortColumnNames=false")
+        echo "RESPONSE=$RESPONSE" >> $GITHUB_ENV
+      shell: bash
+    - name: Send IFTTT notification
+      run: |
+        IFTTT_KEY=${{ secrets.IFTTT_API_KEY }}
+        curl -X POST -H "Content-Type: application/json" -d '{"value1":"${{ env.RESPONSE }}"}' https://maker.ifttt.com/trigger/weather_check/with/key/$IFTTT_KEY
+      shell: bash
