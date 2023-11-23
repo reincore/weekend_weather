@@ -1,5 +1,6 @@
 name: Check Weather
 on:
+  workflow_dispatch: # Manually trigger the workflow
   schedule:
     - cron: '0 15 * * 5' # This will run the action every Friday at 18:00 Istanbul time
 jobs:
