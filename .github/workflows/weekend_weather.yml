@@ -11,10 +11,10 @@ jobs:
       run: |
         API_KEY=${{ secrets.VISUAL_CROSSING_WEATHER_API_KEY }}
         RESPONSE=$(curl -H "X-Rapidapi-Key: $API_KEY" -H "X-Rapidapi-Host: visual-crossing-weather.p.rapidapi.com" -H "Host: visual-crossing-weather.p.rapidapi.com" "https://visual-crossing-weather.p.rapidapi.com/forecast?aggregateHours=24&location=41.0264%2C28.9808&contentType=json&unitGroup=metric&shortColumnNames=false")
-        echo "$RESPONSE" > weather.json
+        echo "RESPONSE=$RESPONSE" >> $GITHUB_ENV
       shell: bash
     - name: Print weather data
-      run: cat weather.json
+      run: echo "${{ env.RESPONSE }}"
       shell: bash
     - name: Send IFTTT notification
       run: |
