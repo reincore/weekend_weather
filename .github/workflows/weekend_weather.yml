@@ -13,11 +13,9 @@ jobs:
         RESPONSE=$(curl -H "X-Rapidapi-Key: $API_KEY" -H "X-Rapidapi-Host: visual-crossing-weather.p.rapidapi.com" -H "Host: visual-crossing-weather.p.rapidapi.com" "https://visual-crossing-weather.p.rapidapi.com/forecast?aggregateHours=24&location=41.0264%2C28.9808&contentType=json&unitGroup=metric&shortColumnNames=false")
         echo "$RESPONSE" > weather.json
       shell: bash
-    - name: Upload weather data
-      uses: actions/upload-artifact@v2
-      with:
-        name: weather-data
-        path: weather.json
+    - name: Print weather data
+      run: cat weather.json
+      shell: bash
     - name: Send IFTTT notification
       run: |
         IFTTT_KEY=${{ secrets.IFTTT_API_KEY }}
