@@ -14,7 +14,7 @@ jobs:
         echo "RESPONSE=$RESPONSE" >> $GITHUB_ENV
       shell: bash
     - name: Print weather data
-      run: echo "${{ env.RESPONSE }}"
+      run: printf '%s\n' "$RESPONSE"
       shell: bash
     - name: Send IFTTT notification
       run: |
