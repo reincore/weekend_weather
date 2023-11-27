@@ -17,6 +17,7 @@ def weekend_weather():
         "location":"41.0264,28.9808",
         "contentType":"json",
         "unitGroup":"metric",
+        "lang":"tr",
         "includeAstronomy":"false",
         "shortColumnNames":"true"
     }
