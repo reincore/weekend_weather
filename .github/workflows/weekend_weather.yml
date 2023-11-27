@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     - name: Install dependencies
@@ -23,7 +23,7 @@ jobs:
         VISUAL_CROSSING_WEATHER_API_KEY: ${{ secrets.VISUAL_CROSSING_WEATHER_API_KEY }}
         IFTTT_API_KEY: ${{ secrets.IFTTT_API_KEY }}
     - name: Upload logs
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: logs
         path: logs.txt
