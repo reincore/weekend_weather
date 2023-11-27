@@ -7,17 +7,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Install jq
+      run: sudo apt-get install jq
+      shell: bash
     - name: Check weather
       run: |
         API_KEY=${{ secrets.VISUAL_CROSSING_WEATHER_API_KEY }}
         RESPONSE=$(curl -H "X-Rapidapi-Key: $API_KEY" -H "X-Rapidapi-Host: visual-crossing-weather.p.rapidapi.com" -H "Host: visual-crossing-weather.p.rapidapi.com" "https://visual-crossing-weather.p.rapidapi.com/forecast?aggregateHours=24&forecastDays=2&location=41.0264%2C28.9808&contentType=json&unitGroup=metric&includeAstronomy=false&shortColumnNames=true")
-        echo "RESPONSE=$RESPONSE" >> $GITHUB_ENV
+        CONDITIONS=$(echo $RESPONSE | jq -r '.locations."41.0264,28.9808".values[].conditions')
+        CONDITIONS_JSON=$(jq -n --arg conditions "$CONDITIONS" '{"value1":$conditions}')
+        echo "CONDITIONS_JSON=$CONDITIONS_JSON" >> $GITHUB_ENV
       shell: bash
     - name: Print weather data
       run: printf '%s\n' "$RESPONSE"
       shell: bash
+    - name: Print weather data
+      run: printf '%s\n' "$CONDITIONS_JSON"
+      shell: bash
     - name: Send IFTTT notification
       run: |
         IFTTT_KEY=${{ secrets.IFTTT_API_KEY }}
-        curl -X POST -H "Content-Type: application/json" -d '{"value1":"${{ env.RESPONSE }}"}' https://maker.ifttt.com/trigger/weather_check/with/key/$IFTTT_KEY
+        curl -X POST -H "Content-Type: application/json" -d "${{ env.CONDITIONS_JSON }}" https://maker.ifttt.com/trigger/weather_check/with/key/$IFTTT_API_KEY
       shell: bash
