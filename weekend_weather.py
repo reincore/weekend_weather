@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 import logging
 
 def weekend_weather():
@@ -32,8 +33,9 @@ def weekend_weather():
     # Ensure there are at least 3 conditions
     conditions += [""] * max(0, 3 - len(conditions))
 
-    condition_data = {"value1": conditions[0], "value2": conditions[1], "value3": conditions[2]}
-    response = requests.post(f"https://maker.ifttt.com/trigger/weekend_weather/with/key/{IFTTT_KEY}", data=condition_data)
+    condition_json = json.dumps({"value1": conditions[0], "value2": conditions[1], "value3": conditions[2]})
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(f"https://maker.ifttt.com/trigger/weekend_weather/with/key/{IFTTT_KEY}", data=condition_json, headers=headers)
     logging.info(f"Status code: {response.status_code}")
     logging.info(f"Response text: {response.text}")
 
