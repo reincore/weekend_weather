@@ -39,6 +39,7 @@ def weekend_weather():
     response = requests.post(f"https://maker.ifttt.com/trigger/weekend_weather/with/key/{IFTTT_KEY}", data=condition_json, headers=headers)
     logging.info(f"Status code: {response.status_code}")
     logging.info(f"Response text: {response.text}")
+    logging.info(f"API response data: {json.dumps(data, indent=2)}")
 
 if __name__ == "__main__":
     weekend_weather()
