@@ -28,7 +28,9 @@ def weekend_weather():
 
     for condition in conditions:
         condition_json = json.dumps({"value1": condition})
-        requests.post(f"https://maker.ifttt.com/trigger/weekend_weather/with/key/{IFTTT_KEY}", data=condition_json)
+        response = requests.post(f"https://maker.ifttt.com/trigger/weekend_weather/with/key/{IFTTT_KEY}", data=condition_json)
+        print(response.status_code)
+        print(response.text)
 
 if __name__ == "__main__":
     weekend_weather()
